@@ -1,0 +1,25 @@
+{
+  "towers" : [
+
+    {
+      "id" : 1,
+      "name" : "Pawn",
+      "hp" : 3,
+      "power" : 1,
+      "minRange" : 1,
+      "maxRange" : 1,
+      "rangeType" : "h"
+    },
+
+    {
+      "id" : 2,
+      "name" : "Lancer",
+      "hp" : 7,
+      "power" : 3,
+      "minRange" : 1,
+      "maxRange" : 5,
+      "rangeType" : "h"
+    }
+
+  ]
+}

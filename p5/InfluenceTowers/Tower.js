@@ -10,6 +10,7 @@ int             dir    : The direction where the tower is facing. (0 - Up, 1 - R
 
 Prop got via file
 --------------------
+String name  : The name of the tower
 int hp       : The influence a tower can resist, if damage is equal or bigger, the tower will disable
 int power    : The influence given to each tiles
 int minRange : The minimun distance where the tower can spread influence
@@ -20,11 +21,20 @@ int maxRange : The maximun distance where the tower can spread influence
 
  */
 
-function Tower(id){
+function Tower(id, towerData){
 
     this.id = id;
     this.damage = 0;
     this.player = new Player(0, "");
     this.dir = 0;
+
+    this.name       = towerData.towers[id].name;
+    this.hp         = towerData.towers[id].hp;
+    this.power      = towerData.towers[id].power;
+    this.minRange   = towerData.towers[id].minRange;
+    this.maxRange   = towerData.towers[id].maxRange;
+    this.rangeType  = towerData.towers[id].rangeType;
+
+    print(this.id + ", " + this.damage + ", " + this.player + ", " + this.dir + ", " + this.name + ", " + this.hp + ", " + this.power + ", " + this.minRange + ", " + this.maxRange + ", " + this.rangeType);
 
 }

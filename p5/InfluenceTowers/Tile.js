@@ -9,10 +9,11 @@ Basic prop.
 
  */
 
-function Tile(){
+function Tile(towerData){
 
-    this.influence = [int(random(0,25)), int(random(0,25)), int(random(0,25)), int(random(0,25))];
-    this.tower = new Tower(0);
+    //this.influence = [int(random(0,25)), int(random(0,25)), int(random(0,25)), int(random(0,25))];
+    this.influence = [0, 0, 0, 0];
+    this.tower = new Tower(0, towerData);
 
     /**
      * Prints a rectangle with the tile info

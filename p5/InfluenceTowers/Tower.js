@@ -3,10 +3,10 @@ A tower of the game, reads it's stats from a file given it's id
 
 Basic prop.
 ----------------
-int             id     : Unique for each type of tower
-int             damage : The damage recieved by the tower, if it equals or exceeds, the tower will disable
-Player          player : The player owning the tower, identified by it's it, id 0 player is NaP(Not a Player)
-int             dir    : The direction where the tower is facing. (0 - Up, 1 - Right, 2 - Down, 3 - Left)
+int          id        : Unique for each type of tower
+int          damage    : The damage recieved by the tower, if it equals or exceeds, the tower will disable
+Player       player    : The player owning the tower, identified by it's it, id 0 player is NaP(Not a Player)
+int          direction : The direction where the tower is facing. (0 - Right, 1 - Down, 2 - Left, 3 - Up)
 
 Prop got via file
 --------------------
@@ -25,8 +25,8 @@ function Tower(id, towerData){
 
     this.id = id;
     this.damage = 0;
-    this.player = new Player(0, "");
-    this.dir = 0;
+    this.player = new PlayerInGame(new Player(0, ""), 0);
+    this.direction = 0;
 
     this.name       = towerData.towers[id].name;
     this.hp         = towerData.towers[id].hp;
@@ -35,6 +35,6 @@ function Tower(id, towerData){
     this.maxRange   = towerData.towers[id].maxRange;
     this.rangeType  = towerData.towers[id].rangeType;
 
-    print(this.id + ", " + this.damage + ", " + this.player + ", " + this.dir + ", " + this.name + ", " + this.hp + ", " + this.power + ", " + this.minRange + ", " + this.maxRange + ", " + this.rangeType);
+    //print(this.id + ", " + this.damage + ", " + this.player + ", " + this.dir + ", " + this.name + ", " + this.hp + ", " + this.power + ", " + this.minRange + ", " + this.maxRange + ", " + this.rangeType);
 
 }

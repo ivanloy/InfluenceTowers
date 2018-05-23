@@ -10,8 +10,9 @@ function preload(){
 function setup() {
 
     createCanvas(500, 500);
-    board = new Board(10);
+    board = new Board(10, towerData);
     var tower = new Tower(1, towerData);
+    //board.tiles[0][0].tower = tower;
 
 }
 

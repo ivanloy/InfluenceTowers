@@ -2,6 +2,16 @@
   "towers" : [
 
     {
+      "id" : 0,
+      "name" : "",
+      "hp" : 0,
+      "power" : 0,
+      "minRange" : 0,
+      "maxRange" : 1,
+      "rangeType" : ""
+    },
+
+    {
       "id" : 1,
       "name" : "Pawn",
       "hp" : 3,

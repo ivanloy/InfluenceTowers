@@ -8,7 +8,7 @@ Basic prop.
 
  */
 
-function Board(size){
+function Board(size, towerData){
 
     this.size = size;
     this.tiles = [];
@@ -17,7 +17,7 @@ function Board(size){
     for(var i = 0; i < size; i++){
         this.tiles[i] = [];
         for(var j = 0; j < size; j++){
-            this.tiles[i][j] = new Tile();
+            this.tiles[i][j] = new Tile(towerData); //TODO Find way to preload in Tower
         }
     }
 
@@ -26,6 +26,7 @@ function Board(size){
      */
     this.printBoard = function() {
 
+        this.updateInfluence();
         for (var i = 0; i < this.tiles.length; i++) {
             for (var j = 0; j < this.tiles[0].length; j++) {
 
@@ -73,9 +74,9 @@ function Board(size){
             }
 
             lastPositionInfluence = influence[max];
-            influence[max] = 0;
+            influence[max] = -1;
 
-        } //TODO MIX COLORS
+        } //TODO BLACK IF TIE
         //print(lastPositionInfluence + ", " + position);
         if(position[0] == 0) fill(WHITE);
         else {
@@ -124,6 +125,72 @@ function Board(size){
 
         var tileY = int(map(mouseY, this.OFFSET, 30 * this.size + this.OFFSET, 0, this.size));
         return tileY;//clamp(tileY, 0, 9);
+
+    }
+
+    /**
+     * Updates the influence of the tiles according to it's state (Towers, walls, etc...)
+     */
+    this.updateInfluence = function(){
+
+        this.cleanTiles();
+        for (var i = 0; i < this.size; i++) {
+            for (var j = 0; j < this.size; j++) {
+                var tower = this.tiles[i][j].tower;
+                if(tower.id != 0){
+
+                    if(tower.rangeType == "h") this.updateRangeH(tower, i, j);
+
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Updates influence for rangeType 'h'
+     * @param tower (Tower) The tower spreading it's influence on the board
+     */
+    this.updateRangeH = function(tower, col, row){
+
+        var direction = tower.direction;
+        var tileX = col;
+        var tileY = row;
+        var increment = tower.power;
+        var minRange = tower.minRange;
+        var maxRange = tower.maxRange;
+        var playerIndex = tower.player.idInBoard;
+
+        if     (direction == 0){ //RIGHT
+            for (var i = tileX + minRange; i < this.tiles.length && i <= tileX + maxRange; i++)
+                this.tiles[i][tileY].influence[playerIndex] += increment;
+        }
+
+        else if(direction == 1){ //DOWN
+            for (var j = tileY + minRange; j < this.tiles[0].length && j <= tileY + maxRange; j++)
+                this.tiles[tileX][j].influence[playerIndex] += increment;
+        }
+
+        else if(direction == 2){ //LEFT
+            for (var i = tileX - minRange; i >= 0 && i >= tileX - maxRange; i--)
+                this.tiles[i][tileY].influence[playerIndex] += increment;
+
+        }
+
+        else if(direction == 3){ //UP
+            for (var j = tileY - minRange; j >= 0 && j >= tileY - maxRange; j--)
+                this.tiles[tileX][j].influence[playerIndex] += increment;
+        }
+
+    }
+
+    this.cleanTiles = function(){
+
+        for (var i = 0; i < this.size; i++) {
+            for (var j = 0; j < this.size; j++) {
+                this.tiles[i][j].influence = [0, 0, 0, 0];
+            }
+        }
 
     }
 

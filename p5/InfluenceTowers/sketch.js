@@ -26,3 +26,16 @@ function draw() {
     text(board.mapMouseX() + ", " +board.mapMouseY(), 20, 20);
 
 }
+
+function mousePressed(){ //TODO Check if Board should manage it itself
+
+    board.placeTower();
+
+}
+
+function keyPressed() {
+
+    if(key == "Q") board.rotateTowerClockwise();
+    if(key == "E") board.rotateTowerCounterclockwise();
+
+}

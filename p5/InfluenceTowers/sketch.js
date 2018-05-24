@@ -23,7 +23,8 @@ function draw() {
     board.printBoard();
     board.printTileInfo();
     fill(255);
-    text(board.mapMouseX() + ", " +board.mapMouseY(), 20, 20);
+    text(board.mapMouseX() + ", " +board.mapMouseY(), 15, 20);
+    text("Player " + (board.currentPlayer + 1), width - 63, 20);
 
 }
 
@@ -35,7 +36,9 @@ function mousePressed(){ //TODO Check if Board should manage it itself
 
 function keyPressed() {
 
-    if(key == "Q") board.rotateTowerClockwise();
-    if(key == "E") board.rotateTowerCounterclockwise();
+    if(key == "E") board.rotateTowerClockwise();
+    if(key == "Q") board.rotateTowerCounterclockwise();
+    if(key == "D") board.changeToNextTower();
+    if(key == "A") board.changeToPrevTower();
 
 }

@@ -33,9 +33,9 @@ function Tile(towerData){
         rect(posX + 5, posY + 15, 10, 10);
         fill(BLUE);
         rect(posX + 5, posY + 30, 10, 10);
-        fill(YELLOW);
-        rect(posX + 5, posY + 45, 10, 10);
         fill(GREEN);
+        rect(posX + 5, posY + 45, 10, 10);
+        fill(YELLOW);
         rect(posX + 5, posY + 60, 10, 10);
 
         fill(0);

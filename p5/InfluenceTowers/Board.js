@@ -3,10 +3,11 @@ A x * x tiles board
 
 Basic prop.
 ----------------
-    int      size  :  The number of rows and columns of the board
-    Tile[][] tiles :  The 2d array of tiles of the board
-    int  direction  : The direction where the next tower will face (0 - Right, 1 - Down, 2 - Left, 3 - Up)
-
+    int           size  :  The number of rows and columns of the board
+    Tile[][]     tiles  :  The 2d array of tiles of the board
+    int      direction  :  The direction where the next tower will face (0 - Right, 1 - Down, 2 - Left, 3 - Up)
+    int  towerSelected  :  The id of the tower currently selected
+    int  currentPlayer  :  The idInBoard of the current player (Turn)
  */
 
 function Board(size, towerData){
@@ -14,6 +15,8 @@ function Board(size, towerData){
     this.size = size;
     this.tiles = [];
     this.direction = 0;
+    this.towerSelected = 1;
+    this.currentPlayer = 0;
     this.OFFSET = 50; //TODO Set in doc
 
     for(var i = 0; i < size; i++){
@@ -28,18 +31,88 @@ function Board(size, towerData){
      */
     this.printBoard = function() {
 
-        this.updateInfluence();
+        this.updateInfluence(); //TODO Update influence only when board changes
         for (var i = 0; i < this.tiles.length; i++) {
             for (var j = 0; j < this.tiles[0].length; j++) {
 
                 this.updateColor(this.tiles[i][j]);
                 rect(30 * i + this.OFFSET, 30 * j + this.OFFSET, 30, 30);
-                //fill('#FFFFFF');
-                //text(abs(tiles[i][j]), 30 * i + OFFSET + 12, 30 * j + OFFSET + 25);
+                fill('#FFFFFF'); //TODO Improve, tower info if cursor over tower, show hp, etc...
+                if(this.tiles[i][j].tower.id == 0)
+                    text(abs(this.calcInfAdvantage(this.tiles[i][j])), 30 * i + this.OFFSET + 12, 30 * j + this.OFFSET + 25);
 
             }
         }
-        this.printRangeHShadow(); //TODO printShadow() method and select this with rangeType() attribute
+        this.printRangeShadow(); //TODO printShadow() method and select this with rangeType() attribute
+
+    }
+
+    /**
+     * Calculates the position array of a tile, Being 1 the player(s) with the most influence, 2 the second(s), etc..
+     *
+     * @param {Tile} tile, the tile to check
+     * @returns {int[]} The position array
+     */
+    this.calcPositionArray = function(tile) {
+
+        var position = [0, 0, 0, 0]; //Array with the position in influence of each player. Example: p1 : 10 inf., p2: 3 inf, p3 : 10 inf, p4 : 14 inf would be [2,3,2,1]
+        var currentPosition = 0; //The position being calculated
+        var lastPositionInfluence = 0; //The influence of the last position to see if it's a tie
+
+        var influence = []; //We copy the influence array to do the operations and keep the original clean
+        for(var i = 0; i < tile.influence.length; i++)
+            influence[i] = tile.influence[i];
+
+        for (var i = 0; i < 4; i++) {
+
+            var max = 0;
+            for (var j = 0; j < 4; j++)
+                if (influence[j] > influence[max]) max = j;
+
+            if (influence[max] == lastPositionInfluence) position[max] = currentPosition;
+            else {
+                currentPosition++;
+                position[max] = currentPosition;
+            }
+
+            lastPositionInfluence = influence[max];
+            influence[max] = -1;
+
+        }
+
+        return position;
+
+    }
+
+    /**
+     * Calcs the difference of influence between the first and second player, if tie, it return 0
+     * @param tile The tile to check
+     * @returns {number} The difference between the two players with the most influence on that tile
+     */
+    this.calcInfAdvantage = function(tile){
+
+        var position = this.calcPositionArray(tile);
+        var firstInf = 0;
+        var secondInf = 0;
+        var firstCount = 0;
+        var ret = 0;
+
+        if(position[0] != 0){
+
+            for(var i = 0; i < position.length; i++){
+
+                if     (position[i] == 1){
+                    firstInf = tile.influence[i];
+                    firstCount++;
+                }
+                else if(position[i] == 2) secondInf = tile.influence[i];
+
+            }
+
+        }
+
+        if(firstCount == 1) ret = firstInf - secondInf;
+        return ret;
 
     }
 
@@ -50,56 +123,34 @@ function Board(size, towerData){
      */
     this.updateColor = function(tile) {
 
-        const WHITE  =  color(255); //TODO Enum with colors
-        const RED    =  color(255, 0, 0);
-        const BLUE   =  color(0, 0, 255);
-        const YELLOW =  color(255, 255, 0);
-        const GREEN  =  color(0, 255, 0);
-        const BLACK  =  color(0, 0, 0);
-        const GREY   =  color(133);
-
-        var influence = []; //We copy the influence array to do the operations and keep the original clean
-        for(var i = 0; i < tile.influence.length; i++)
-            influence[i] = tile.influence[i];
-
-        var position = [0, 0, 0, 0]; //Array with the position in influence of each player. Example: p1 : 10 inf., p2: 3 inf, p3 : 10 inf, p4 : 14 inf would be [2,3,2,1]
-        var currentPosition = 0; //The position being calculated
-        var lastPositionInfluence = 0; //The influence of the last position to see if it's a tie
+        var position;
+        var firstPlaceTaken = false; //To see if someone already took the first place and other player has the same influence (tie)
+        var colors = new Colors();
 
         if(tile.tower.id == 0) {
 
-            for (var i = 0; i < 4; i++) {
-
-                var max = 0;
-                for (var j = 0; j < 4; j++)
-                    if (influence[j] > influence[max]) max = j;
-
-                if (influence[max] == lastPositionInfluence) position[max] = currentPosition;
-                else {
-                    currentPosition++;
-                    position[max] = currentPosition;
-                }
-
-                lastPositionInfluence = influence[max];
-                influence[max] = -1;
-
-            } //TODO BLACK IF TIE
+            position = this.calcPositionArray(tile);
             //print(lastPositionInfluence + ", " + position);
-            if (position[0] == 0) fill(WHITE);
+
+            if (position[0] == 0) fill(colors.WHITE);
             else {
                 for (var i = 0; i < 4; i++) {
                     if (position[i] == 1) {
 
-                        if (i == 0) fill(RED);
-                        else if (i == 1) fill(BLUE);
-                        else if (i == 2) fill(GREEN);
-                        else fill(YELLOW);
+                        if(firstPlaceTaken) fill(colors.BLACK);
+                        else {
+                            if (i == 0) fill(colors.RED);
+                            else if (i == 1) fill(colors.BLUE);
+                            else if (i == 2) fill(colors.GREEN);
+                            else fill(colors.ORANGE);
+                            firstPlaceTaken = true;
+                        }
 
                     }
                 }
             }
 
-        }else fill(GREY);
+        }else fill(colors.GREY);
 
     }
 
@@ -194,13 +245,26 @@ function Board(size, towerData){
 
     }
 
-    this.printRangeHShadow = function(){ //TODO Enum with colors
+    this.printRangeShadow = function() {
 
-        const RED_ALPHA_INF   = color(204, 0, 0, 120);
-        const RED_ALPHA_TOWER = color(104, 120);
+        var tileX = this.mapMouseX();
+        var tileY = this.mapMouseY();
+        var tower = new Tower(this.towerSelected, towerData);
 
-        var tower = new Tower(1, towerData); //TODO Delete this, pass some prebuilt objects
-        //this.tiles[tileX][tileY].tower.direction = this.direction; //TODO useless if does not use the same object when placing the tower, could just take this.direction
+        if(tileX >= 0 && tileY >= 0 && tileY < this.size && tileX < this.size
+            && this.tiles[tileX][tileY].tower.id == 0 && this.checkIfNoInfluence(tileX, tileY)) {
+
+            if (tower.rangeType == "h")
+                 this.printRangeHShadow(tower);
+
+        }
+    }
+
+    this.printRangeHShadow = function(tower){ //TODO Enum with colors
+
+        const RED_ALPHA_INF   = color(154, 120);
+        const RED_ALPHA_TOWER = color(44, 120);
+
         var direction = this.direction;
         var tileX = this.mapMouseX();
         var tileY = this.mapMouseY();
@@ -209,34 +273,33 @@ function Board(size, towerData){
         var maxRange = tower.maxRange;
         var playerIndex = tower.player.idInBoard;
 
-        if(tileX >= 0 && tileY >= 0 && tileY < this.size && tileX < this.size && this.tiles[tileX][tileY].tower.id == 0 && this.checkIfNoInfluence(tileX, tileY)) {
 
-            fill(RED_ALPHA_TOWER);
-            rect(tileX * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
+        fill(RED_ALPHA_TOWER);
+        rect(tileX * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
 
-            fill(RED_ALPHA_INF); //TODO Change color with the player putting the tower, cut the tower if crosses zones with more influence, lighter red if inf decreases over distance
-            if (direction == 0) { //RIGHT
-                for (var i = tileX + minRange; i < this.tiles.length && i <= tileX + maxRange; i++)
-                    rect(i * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
-            }
+        fill(RED_ALPHA_INF); //TODO Change color with the player putting the tower, cut the tower if crosses zones with more influence, lighter red if inf decreases over distance
+        if (direction == 0) { //RIGHT
+            for (var i = tileX + minRange; i < this.tiles.length && i <= tileX + maxRange; i++)
+                rect(i * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
+        }
 
-            else if (direction == 1) { //DOWN
-                for (var j = tileY + minRange; j < this.tiles[0].length && j <= tileY + maxRange; j++)
-                    rect(tileX * 30 + this.OFFSET, j * 30 + this.OFFSET, 30, 30);
-            }
+        else if (direction == 1) { //DOWN
+            for (var j = tileY + minRange; j < this.tiles[0].length && j <= tileY + maxRange; j++)
+                rect(tileX * 30 + this.OFFSET, j * 30 + this.OFFSET, 30, 30);
+        }
 
-            else if (direction == 2) { //LEFT
-                for (var i = tileX - minRange; i >= 0 && i >= tileX - maxRange; i--)
-                    rect(i * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
-
-            }
-
-            else if (direction == 3) { //UP
-                for (var j = tileY - minRange; j >= 0 && j >= tileY - maxRange; j--)
-                    rect(tileX * 30 + this.OFFSET, j * 30 + this.OFFSET, 30, 30);
-            }
+        else if (direction == 2) { //LEFT
+            for (var i = tileX - minRange; i >= 0 && i >= tileX - maxRange; i--)
+                rect(i * 30 + this.OFFSET, tileY * 30 + this.OFFSET, 30, 30);
 
         }
+
+        else if (direction == 3) { //UP
+            for (var j = tileY - minRange; j >= 0 && j >= tileY - maxRange; j--)
+                rect(tileX * 30 + this.OFFSET, j * 30 + this.OFFSET, 30, 30);
+        }
+
+
     }
 
     /**
@@ -283,9 +346,11 @@ function Board(size, towerData){
 
         if(tileX >= 0 && tileY >= 0 && tileY < this.size && tileX < this.size && this.tiles[tileX][tileY].tower.id == 0 && this.checkIfNoInfluence(tileX, tileY)){ //CHECK NO INFLUENCE IN THAT TILE
 
-            this.tiles[tileX][tileY].tower = new Tower(1, towerData); //TODO Gen 1, not read everytime, or something like that, who knows ma boi
+            this.tiles[tileX][tileY].tower = new Tower(this.towerSelected, towerData); //TODO Gen 1, not read everytime, or something like that, who knows ma boi
             this.tiles[tileX][tileY].tower.direction = this.direction;
-            print("TOWER ID " + 1 + " PLACED IN X:" + tileX + " Y:" + tileY + " DIRECTION: " + this.direction);
+            this.tiles[tileX][tileY].tower.player.idInBoard = this.currentPlayer;
+            this.nextTurn();
+            print("TOWER ID " + this.towerSelected + " PLACED IN X:" + tileX + " Y:" + tileY + " DIRECTION: " + this.direction);
 
         }
 
@@ -313,6 +378,39 @@ function Board(size, towerData){
         
     }
 
+    /**
+     * Changes the tower to the next id one, id 1 if passes the last one
+     */
+    this.changeToNextTower = function() {
 
+        var numTowers = towerData.towers.length - 1;
+        this.towerSelected++;
+
+        if(this.towerSelected > numTowers) this.towerSelected = 1;
+
+    }
+
+    /**
+     * Changes the tower to the prev id one, last tower if reaches the id 0 tower
+     */
+    this.changeToPrevTower = function() {
+
+        var numTowers = towerData.towers.length - 1;
+        this.towerSelected--;
+
+        if(this.towerSelected <= 0) this.towerSelected = numTowers;
+
+    }
+
+    /**
+     * Changes to the next player's turn
+     */
+    this.nextTurn = function () {
+
+        this.currentPlayer++;
+
+        if(this.currentPlayer > 3) this.currentPlayer = 0;
+
+    }
 
 }

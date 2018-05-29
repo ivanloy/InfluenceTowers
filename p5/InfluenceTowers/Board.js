@@ -223,23 +223,23 @@ function Board(size, towerData){
         var playerIndex = tower.player.idInBoard;
 
         if     (direction == 0){ //RIGHT
-            for (var i = tileX + minRange; i < this.tiles.length && i <= tileX + maxRange; i++)
+            for (var i = tileX + minRange; i < this.tiles.length && i <= tileX + maxRange && this.tiles[i][tileY].tower.id == 0; i++)
                 this.tiles[i][tileY].influence[playerIndex] += increment;
         }
 
         else if(direction == 1){ //DOWN
-            for (var j = tileY + minRange; j < this.tiles[0].length && j <= tileY + maxRange; j++)
+            for (var j = tileY + minRange; j < this.tiles[0].length && j <= tileY + maxRange && this.tiles[tileX][j].tower.id == 0; j++)
                 this.tiles[tileX][j].influence[playerIndex] += increment;
         }
 
         else if(direction == 2){ //LEFT
-            for (var i = tileX - minRange; i >= 0 && i >= tileX - maxRange; i--)
+            for (var i = tileX - minRange; i >= 0 && i >= tileX - maxRange && this.tiles[i][tileY].tower.id == 0; i--) //TODO Healther
                 this.tiles[i][tileY].influence[playerIndex] += increment;
 
         }
 
         else if(direction == 3){ //UP
-            for (var j = tileY - minRange; j >= 0 && j >= tileY - maxRange; j--)
+            for (var j = tileY - minRange; j >= 0 && j >= tileY - maxRange && this.tiles[tileX][j].tower.id == 0; j--)
                 this.tiles[tileX][j].influence[playerIndex] += increment;
         }
 

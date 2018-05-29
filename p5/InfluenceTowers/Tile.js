@@ -21,21 +21,17 @@ function Tile(towerData){
      */
     this.printTileInfo = function(posX, posY){
 
-        const RED    =  color(255, 0, 0); //TODO Colors class/enum, maybe add it in p5.js framework
-        const BLUE   =  color(0, 0, 255);
-        const YELLOW =  color(255, 255, 0);
-        const GREEN  =  color(0, 255, 0);
-
+        var colors = new Colors();
         fill(255);
         rect(posX, posY, 110, 90);
 
-        fill(RED);
+        fill(colors.RED);
         rect(posX + 5, posY + 15, 10, 10);
-        fill(BLUE);
+        fill(colors.BLUE);
         rect(posX + 5, posY + 30, 10, 10);
-        fill(GREEN);
+        fill(colors.GREEN);
         rect(posX + 5, posY + 45, 10, 10);
-        fill(YELLOW);
+        fill(colors.ORANGE);
         rect(posX + 5, posY + 60, 10, 10);
 
         fill(0);

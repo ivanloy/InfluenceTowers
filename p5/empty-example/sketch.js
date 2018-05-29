@@ -15,7 +15,7 @@ function setup() {
     orientation = 0;
 
     for (var i = 0; i < size; i++) {
-        tile[i] = []
+        tile[i] = [];
         for (var j = 0; j < size; j++) {
             tile[i][j] = 0;
         }

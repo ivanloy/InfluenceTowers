@@ -1,0 +1,49 @@
+{
+
+  "colors" : [
+
+    {
+
+      "color" : "#FF0000",
+      "turnClockwise" : 1
+
+    },
+
+    {
+
+      "color" : "#00FF00",
+      "turnClockwise" : 0
+
+    },
+
+    {
+
+      "color" : "#0000FF",
+      "turnClockwise" : 1
+
+    },
+
+    {
+
+      "color" : "#FFFF00",
+      "turnClockwise" : 1
+
+    },
+
+    {
+
+      "color" : "#00FFFF",
+      "turnClockwise" : 0
+
+    },
+
+    {
+
+      "color" : "#FF00FF",
+      "turnClockwise" : 1
+
+    }
+
+  ]
+
+}

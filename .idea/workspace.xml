@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fac62da3-8eca-4640-b7e9-4267136f29bd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/p5/LangtonsAnt/ants.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/p5/LangtonsAnt/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/p5/LangtonsAnt/sketch.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/p5/InfluenceTowers/Board.js" beforeDir="false" afterPath="$PROJECT_DIR$/p5/InfluenceTowers/Board.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/p5/InfluenceTowers/Tile.js" beforeDir="false" afterPath="$PROJECT_DIR$/p5/InfluenceTowers/Tile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/p5/empty-example/sketch.js" beforeDir="false" afterPath="$PROJECT_DIR$/p5/empty-example/sketch.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -84,8 +78,8 @@
         <entry file="file://$PROJECT_DIR$/p5/InfluenceTowers/PlayerInGame.js">
 >>>>>>> Stashed changes
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+            <state relative-caret-position="374">
+              <caret line="112" column="29" lean-forward="true" selection-start-line="112" selection-start-column="29" selection-end-line="113" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -302,20 +296,27 @@
       <updated>1527083606625</updated>
       <workItem from="1527083609232" duration="18767000" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <workItem from="1527614293841" duration="6231000" />
 =======
       <workItem from="1527668517067" duration="36000" />
+>>>>>>> Stashed changes
+=======
+      <workItem from="1527614293841" duration="6527000" />
 >>>>>>> Stashed changes
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <option name="totallyTimeSpent" value="33200000" />
+=======
+    <option name="totallyTimeSpent" value="33496000" />
+>>>>>>> Stashed changes
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -701,8 +702,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/p5/LangtonsAnt/sketch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+        <state relative-caret-position="374">
+          <caret line="112" column="29" lean-forward="true" selection-start-line="112" selection-start-column="29" selection-end-line="113" selection-end-column="28" />
         </state>
       </provider>
     </entry>

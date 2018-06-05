@@ -1,4 +1,4 @@
-var gridSize = 100;
+var gridSize = 500;
 var grid = [];
 var antX = gridSize / 2;
 var antY = gridSize / 2;
@@ -7,7 +7,7 @@ var antOrientation = 0; //(0 - Right, 1 - Down, 2 - Left, 3 - Up)
 function setup() {
 
     frameRate(60);
-    createCanvas(900,900);
+    createCanvas(1500,1500);
     noStroke();
 
     for (var i = 0; i < gridSize; i++) {
@@ -21,7 +21,7 @@ function setup() {
 
 function draw() {
 
-    for(var i = 0; i < 50; i++) {
+    for(var i = 0; i < 1000; i++) {
 
         turnAnt();
         drawAntBox();
@@ -76,12 +76,12 @@ function turnAnt(){ //TODO Proper method for this
     if(grid[antX][antY] == 0 || grid[antX][antY] == 1){
 
         grid[antX][antY] = 2;
-        turnClockwise();
+        turnAntiClockwise();
 
     }else if(grid[antX][antY] == 2){
 
         grid[antX][antY] = 3;
-        turnClockwise();
+        turnAntiClockwise();
 
     }else if(grid[antX][antY] == 3){
 
@@ -91,7 +91,7 @@ function turnAnt(){ //TODO Proper method for this
     }else if(grid[antX][antY] == 4){
 
         grid[antX][antY] = 5;
-        turnAntiClockwise();
+        turnClockwise();
 
     }else if(grid[antX][antY] == 5){
 
@@ -106,7 +106,7 @@ function turnAnt(){ //TODO Proper method for this
     }else if(grid[antX][antY] == 7){
 
         grid[antX][antY] = 8;
-        turnAntiClockwise();
+        turnClockwise();
 
     }else if(grid[antX][antY] == 8){
 
@@ -116,7 +116,7 @@ function turnAnt(){ //TODO Proper method for this
     }else if(grid[antX][antY] == 9){
 
         grid[antX][antY] = 10;
-        turnClockwise();
+        turnAntiClockwise();
 
     }else{
 

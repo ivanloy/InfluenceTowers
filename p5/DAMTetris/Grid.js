@@ -23,7 +23,7 @@ function Grid(){
             for(var j = 2; j < this.gridHeight; j++){
 
                 if      (this.tiles[i][j] == 0) fill(31);
-                else if (this.tiles[i][j] == 1) fill('#FF0000');
+                else if (this.tiles[i][j] == 1 || this.tiles[i][j] == -1) fill('#FF0000');
 
                 rect(i*30, (j-2)*30, 30, 30);
 

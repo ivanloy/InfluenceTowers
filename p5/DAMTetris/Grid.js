@@ -30,6 +30,13 @@ function Grid(){
                 else if (this.tiles[i][j] == 5 || this.tiles[i][j] == -5) fill('#62ff3c');
                 else if (this.tiles[i][j] == 6 || this.tiles[i][j] == -6) fill('#FF0000');
                 else if (this.tiles[i][j] == 7 || this.tiles[i][j] == -7) fill('#940a89');
+                else if (this.tiles[i][j] == -8)  fill('#52fff3'); //TODO Add alpha, r, g, b, a colors, naisu traisu, or drawings
+                else if (this.tiles[i][j] == -9)  fill('#1a05c1');
+                else if (this.tiles[i][j] == -10) fill('#ff8227');
+                else if (this.tiles[i][j] == -11) fill('#fdff3d');
+                else if (this.tiles[i][j] == -12) fill('#62ff3c');
+                else if (this.tiles[i][j] == -13) fill('#FF0000');
+                else if (this.tiles[i][j] == -14) fill('#940a89');
 
                 rect(i*30, (j-2)*30, 30, 30);
 
@@ -44,6 +51,18 @@ function Grid(){
             for(var j = 0; j < this.gridHeight; j++){
 
                 if(this.tiles[i][j] < 0) this.tiles[i][j] = 0;
+
+            }
+        }
+
+    }
+
+    this.moveLinesDown = function(row){
+
+        for(var i = 0; i < this.gridWidth; i++) {
+            for (var j = row; j > 0; j--) {
+
+                this.tiles[i][j] = this.tiles[i][j - 1];
 
             }
         }

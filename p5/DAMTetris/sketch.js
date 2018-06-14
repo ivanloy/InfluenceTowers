@@ -8,18 +8,22 @@ var moveKeyPressed;
 var rotationKeyPressed;
 var hardDropPressed;
 var score;
+var lines;
+var pieces;
 
 function setup() {
     noStroke();
     createCanvas(700, 600);
-    grid = new Grid();
     piece = new CurrentPiece();
+    pieces = loadImage("n9.png");
+    grid = new Grid(pieces);
     delay = 7;
     score = 0;
+    lines = 0;
     rotationKeyPressed = false;
     hardDropPressed = false;
     ticks = 0;
-    dasDelay = 12;
+    dasDelay = 9;
     dasDelayTicks = 0;
     piece.setPiece(grid, int(random(0,7)), 0, 3, 0);
 
@@ -30,11 +34,11 @@ function draw() {
     background(100);
     ticks++;
     dasDelayTicks++;
-
+    image(pieces.get(0, 0, 16, 16), width - 100, 10, 30, 30);
     fill(255);
     textSize(30);
     text("SCORE: " + score, grid.gridWidth * 30 + 30, 50);
-
+    text("LINES: " + lines, grid.gridWidth * 30 + 30, 100);
     if(ticks >= delay || keyIsDown(DOWN_ARROW)){
 
         ticks = 0;
@@ -116,5 +120,7 @@ function addPoints(nLines){
     else if(nLines === 2) score += 100;
     else if(nLines === 3) score += 300;
     else if(nLines === 4) score += 1200;
+
+    lines += nLines; //TODO Cohesion
 
 }

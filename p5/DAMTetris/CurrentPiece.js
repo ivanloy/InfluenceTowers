@@ -89,8 +89,11 @@ function CurrentPiece(){
     this.movePieceRight = function(){
 
         var ret = this.piece.movePieceRight(this.grid, this.pieceType, this.rotation, this.x, this.y);
-        if(ret) this.x++;
-        this.lockTicks = max(this.lockTicks - (this.lockDelay - this.lockTicks) / 2, this.lockDelay / 5);
+        if(ret){
+            this.x++;
+            this.lockTicks = max(this.lockTicks - (this.lockDelay - this.lockTicks) / 2, this.lockDelay / 5);
+        }
+
         return ret;
 
     }
@@ -98,8 +101,10 @@ function CurrentPiece(){
     this.movePieceLeft = function(){ //TODO ONE METHOD MA BOI
 
         var ret = this.piece.movePieceLeft(this.grid, this.pieceType, this.rotation, this.x, this.y);
-        if(ret) this.x--;
-        this.lockTicks = max(this.lockTicks - (this.lockDelay - this.lockTicks) / 2, this.lockDelay / 5);
+        if(ret) {
+            this.x--;
+            this.lockTicks = max(this.lockTicks - (this.lockDelay - this.lockTicks) / 2, this.lockDelay / 5);
+        }
         return ret;
 
     }

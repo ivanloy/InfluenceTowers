@@ -10,13 +10,26 @@ var hardDropPressed;
 var score;
 var lines;
 var pieces;
+var sprites;
+
+function preload() {
+    pieces = loadImage("n9.png");
+}
 
 function setup() {
     noStroke();
     createCanvas(700, 600);
     piece = new CurrentPiece();
-    pieces = loadImage("n9.png");
-    grid = new Grid(pieces);
+    sprites = [
+        pieces.get(16*6, 0, 16, 16),
+        pieces.get(16*7, 0, 16, 16),
+        pieces.get(16*3, 0, 16, 16),
+        pieces.get(16*4, 0, 16, 16),
+        pieces.get(16*5, 0, 16, 16),
+        pieces.get(16*2, 0, 16, 16),
+        pieces.get(16*8, 0, 16, 16),
+    ]
+    grid = new Grid(sprites);
     delay = 7;
     score = 0;
     lines = 0;
@@ -32,6 +45,7 @@ function setup() {
 function draw() {
 
     background(100);
+    //image(sprites[1], 300, 300, 200, 200);
     ticks++;
     dasDelayTicks++;
     image(pieces.get(0, 0, 16, 16), width - 100, 10, 30, 30);

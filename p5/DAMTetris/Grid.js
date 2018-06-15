@@ -1,9 +1,17 @@
 /**
  * The tetris grid
  *
+ * Basic properties
+ * ----------------
+ *
+ * int gridWidth - The number of columns of the grid
+ * int gridHeight - The number of rows of the grid
+ * int visibleHeight - The number of rows the player can see
+ * int[][] tiles - The grid with the piece id of each tile
+ *
  */
 
-function Grid(tileSprites){
+function Grid(tileSprites, field){
 
     this.gridWidth = 10;
     this.gridHeight = 22;
@@ -17,24 +25,26 @@ function Grid(tileSprites){
         }
     }
 
+    /**
+     * Draws the grid, it's sooooo cool
+     */
     this.drawGrid = function(){
 
+        image(field, 0, 0, 30 * 10, 30 * 20);
+
+
         for(var i = 0; i < this.gridWidth; i++){
-            for(var j = 2; j < this.gridHeight; j++){
+            for(var j = this.gridHeight - this.visibleHeight; j < this.gridHeight; j++){
 
                 var currentTile = this.tiles[i][j];
 
-                if      (currentTile == 0){ fill(31); rect(i*30, (j-2)*30, 30, 30);}
-                else if (currentTile >= -7 && currentTile <= 7)
+                if      (currentTile == 0){ }
+                else if (currentTile >= -7 && currentTile <= 7) {
                     image(tileSprites[abs(currentTile) - 1], i * 30, (j - 2) * 30, 30, 30);
-
-                else if (currentTile)  fill('#52fff3'); //TODO Add alpha, r, g, b, a colors, naisu traisu, or drawings
-                else if (currentTile)  fill('#1a05c1');
-                else if (currentTile)  fill('#ff8227');
-                else if (currentTile)  fill('#fdff3d');
-                else if (currentTile)  fill('#62ff3c');
-                else if (currentTile)  fill('#FF0000');
-                else if (currentTile)  fill('#940a89');
+                }
+                else{
+                    image(tileSprites[abs(currentTile + 7)], i * 30, (j - 2) * 30, 30, 30);
+                }
 
 
             }
@@ -42,6 +52,9 @@ function Grid(tileSprites){
 
     }
 
+    /**
+     * Clears the moving piece tiles, setting it's value to 0, so it does only draw it where it moved to
+     */
     this.clearCurrentPieceTiles = function(){ //TODO Use this for moving left/right/up instead of weird moving
 
         for(var i = 0; i < this.gridWidth; i++){
@@ -54,6 +67,11 @@ function Grid(tileSprites){
 
     }
 
+    /**
+     * Moves all lines above a given row one place down
+     *
+     * @param row The bottom row where you want to start moving lines down.
+     */
     this.moveLinesDown = function(row){
 
         for(var i = 0; i < this.gridWidth; i++) {

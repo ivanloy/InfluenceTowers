@@ -11,13 +11,22 @@ var score;
 var lines;
 var pieces;
 var sprites;
+var field;
+var background;
+var font;
 
 function preload() {
-    pieces = loadImage("n9.png");
+    field = loadImage("sprites/fieldbg2.png");
+    pieces = loadImage("sprites/n1.png");
+    background = loadImage("sprites/back0.png");
+    font = loadFont("font.ttf");
 }
 
 function setup() {
+
     noStroke();
+    textFont(font);
+    textStyle(BOLD);
     createCanvas(700, 600);
     piece = new CurrentPiece();
     sprites = [
@@ -29,7 +38,7 @@ function setup() {
         pieces.get(16*2, 0, 16, 16),
         pieces.get(16*8, 0, 16, 16),
     ]
-    grid = new Grid(sprites);
+    grid = new Grid(sprites, field);
     delay = 7;
     score = 0;
     lines = 0;
@@ -39,20 +48,23 @@ function setup() {
     dasDelay = 9;
     dasDelayTicks = 0;
     piece.setPiece(grid, int(random(0,7)), 0, 3, 0);
+    piece.drawGhostPiece();
 
 }
 
 function draw() {
 
-    background(100);
+    //background(100);
+    image(background, 0, 0, width, height);
+    //print(frameRate());
     //image(sprites[1], 300, 300, 200, 200);
     ticks++;
     dasDelayTicks++;
-    image(pieces.get(0, 0, 16, 16), width - 100, 10, 30, 30);
+    //image(pieces.get(0, 0, 16, 16), width - 100, 10, 30, 30);
     fill(255);
     textSize(30);
-    text("SCORE: " + score, grid.gridWidth * 30 + 30, 50);
-    text("LINES: " + lines, grid.gridWidth * 30 + 30, 100);
+    text("SCORE: " + score, grid.gridWidth * 30 + 30, height - 100);
+    text("LINES: " + lines, grid.gridWidth * 30 + 30, height - 50);
     if(ticks >= delay || keyIsDown(DOWN_ARROW)){
 
         ticks = 0;
@@ -61,7 +73,8 @@ function draw() {
 
             var nLines = piece.deleteLines();
             addPoints(nLines);
-            piece.setPiece(grid, int(random(0, 7)), 0, 3, 2);
+            piece.setPiece(grid, int(random(0, 7)), 0, 3, 0);
+            piece.drawGhostPiece();
 
         }
 
@@ -73,7 +86,8 @@ function draw() {
         hardDropPressed = true;
         var nLines = piece.deleteLines();
         addPoints(nLines);
-        piece.setPiece(grid, int(random(0,7)), 0, 3, 2);
+        piece.setPiece(grid, int(random(0,7)), 0, 3, 0);
+        piece.drawGhostPiece();
 
     }
 
@@ -128,6 +142,10 @@ function keyReleased(){
 
 }
 
+/**
+ * Adds points to the scoreboard depending on the number of lines cleared
+ * @param nLines the number of lines cleared
+ */
 function addPoints(nLines){
 
     if     (nLines === 1) score += 40;

@@ -3,7 +3,8 @@
  *
  * Basic attributes
  * ----------------
- * pieces : The arrays with the piece bounding boxes
+ * boolean[] pieces : The arrays with the piece bounding boxes
+ *
  */
 function Piece(){
 

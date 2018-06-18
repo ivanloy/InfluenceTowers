@@ -22,7 +22,7 @@ function CurrentPiece(){
     this.y = 0;
     this.rotation = 0;
     this.pieceType = '';
-    this.lockDelay = 4;
+    this.lockDelay = 7; //TODO USE FRAMES ETC
     this.lockTicks = 0;
 
     /**
@@ -237,6 +237,22 @@ function CurrentPiece(){
 
         this.drawGhostPiece();
         piece.setPiece(grid, this.pieceType, this.rotation, this.x, this.y);
+
+    }
+
+    this.drawNextPiece = function(next, tileSprites){
+
+        fill(0);
+        rect((grid.gridWidth + 2) * 30, 30, 120, 120);
+
+         var boundingBox = this.piece.getBoundingBox(next, 0);
+         for(var i = 0; i < boundingBox.length; i++) {
+             for (var j = 0; j < boundingBox[0].length; j++) {
+
+                 if(boundingBox[j][i])
+                     image(tileSprites[next], (i + grid.gridWidth + 1) * 30 + 30, (j + 1) * 30, 30, 30);
+             }
+         }
 
     }
 

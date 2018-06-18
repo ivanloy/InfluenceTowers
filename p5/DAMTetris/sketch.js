@@ -14,10 +14,11 @@ var sprites;
 var field;
 var background;
 var font;
+var next;
 
 function preload() {
     field = loadImage("sprites/fieldbg2.png");
-    pieces = loadImage("sprites/n1.png");
+    pieces = loadImage("sprites/n9.png");
     background = loadImage("sprites/back0.png");
     font = loadFont("font.ttf");
 }
@@ -25,7 +26,9 @@ function preload() {
 function setup() {
 
     noStroke();
+    next = 0;
     textFont(font);
+    textSize(30);
     textStyle(BOLD);
     createCanvas(700, 600);
     piece = new CurrentPiece();
@@ -39,15 +42,16 @@ function setup() {
         pieces.get(16*8, 0, 16, 16),
     ]
     grid = new Grid(sprites, field);
-    delay = 7;
+    delay = 250;
     score = 0;
     lines = 0;
     rotationKeyPressed = false;
     hardDropPressed = false;
     ticks = 0;
-    dasDelay = 9;
+    dasDelay = 6;
     dasDelayTicks = 0;
     piece.setPiece(grid, int(random(0,7)), 0, 3, 0);
+    next = int(random(0,7));
     piece.drawGhostPiece();
 
 }
@@ -55,6 +59,7 @@ function setup() {
 function draw() {
 
     //background(100);
+   // print(round(frameRate()));
     image(background, 0, 0, width, height);
     //print(frameRate());
     //image(sprites[1], 300, 300, 200, 200);
@@ -62,7 +67,7 @@ function draw() {
     dasDelayTicks++;
     //image(pieces.get(0, 0, 16, 16), width - 100, 10, 30, 30);
     fill(255);
-    textSize(30);
+    text("LEVEL: " + int(lines / 10 + 1), grid.gridWidth * 30 + 30, height - 150);
     text("SCORE: " + score, grid.gridWidth * 30 + 30, height - 100);
     text("LINES: " + lines, grid.gridWidth * 30 + 30, height - 50);
     if(ticks >= delay || keyIsDown(DOWN_ARROW)){
@@ -73,8 +78,10 @@ function draw() {
 
             var nLines = piece.deleteLines();
             addPoints(nLines);
-            piece.setPiece(grid, int(random(0, 7)), 0, 3, 0);
+            piece.setPiece(grid, int(next), 0, 3, 0);
+            next = int(random(0,7));
             piece.drawGhostPiece();
+            delay = 21 - int(lines / 10 + 1);
 
         }
 
@@ -86,8 +93,10 @@ function draw() {
         hardDropPressed = true;
         var nLines = piece.deleteLines();
         addPoints(nLines);
-        piece.setPiece(grid, int(random(0,7)), 0, 3, 0);
+        piece.setPiece(grid, int(next), 0, 3, 0);
+        next = int(random(0,7));
         piece.drawGhostPiece();
+        delay = 21 - int(lines / 10 + 1);
 
     }
 
@@ -128,6 +137,7 @@ function draw() {
 
 
     grid.drawGrid();
+    piece.drawNextPiece(next, sprites);
 
 }
 
@@ -148,10 +158,10 @@ function keyReleased(){
  */
 function addPoints(nLines){
 
-    if     (nLines === 1) score += 40;
-    else if(nLines === 2) score += 100;
-    else if(nLines === 3) score += 300;
-    else if(nLines === 4) score += 1200;
+    if     (nLines === 1) score += 40 * int(lines / 10 + 1);
+    else if(nLines === 2) score += 100 * int(lines / 10 + 1);
+    else if(nLines === 3) score += 300 * int(lines / 10 + 1);
+    else if(nLines === 4) score += 1200 * int(lines / 10 + 1);
 
     lines += nLines; //TODO Cohesion
 
